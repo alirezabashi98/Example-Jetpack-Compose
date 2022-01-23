@@ -64,6 +64,7 @@ fun DefaultPreview() {
 @Composable
 fun MyBox() {
     // داخل box میشه کمپوز هارو رویه هم قرار داد
+    // این یه کونتینرز هست
     Box(
         modifier = Modifier
             .size(100.dp)
@@ -80,6 +81,8 @@ fun MyBox() {
 fun MyColumn() {
     // میتونیم با این کالم کمپوز هارو عمودی کنار هم چید
     // اینجا گفتیم هوریزنتالت وسط باشه
+    // این یه کونتینرز هست
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
@@ -93,6 +96,8 @@ fun MyColumn() {
 @Composable
 fun MyRow() {
     //  بصورت افقی کمپوز هارو کنار هم میچینه
+    // این یه کونتینرز هست
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxSize(),
