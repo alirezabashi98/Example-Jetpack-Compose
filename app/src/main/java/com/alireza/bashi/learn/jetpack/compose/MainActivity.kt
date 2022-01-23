@@ -1,30 +1,23 @@
 package com.alireza.bashi.learn.jetpack.compose
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.BasicText
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.alireza.bashi.learn.jetpack.compose.ui.theme.LearnJetpackComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -46,92 +39,69 @@ class MainActivity : ComponentActivity() {
 //    uiMode = UI_MODE_NIGHT_YES
 //    name = "DefaultPreviewDark"
 @Preview(showBackground = true)
-@Preview(showBackground = true, showSystemUi = true, widthDp = 320, name = "DefaultPreviewLight")
 @Preview(
     showBackground = true,
     uiMode = UI_MODE_NIGHT_YES,
-    showSystemUi = true,
-    widthDp = 320,
     name = "DefaultPreviewDark"
 )
 @Composable
 fun DefaultPreview() {
     LearnJetpackComposeTheme {
-        TextSample()
+        ButtonExample()
     }
 }
 
 @Composable
-fun MyBox() {
-    // داخل box میشه کمپوز هارو رویه هم قرار داد
-    // این یه کونتینرز هست
-    Box(
+fun ButtonExample() {
+    Column(
         modifier = Modifier
-            .size(100.dp)
-            .padding(16.dp)
-            .background(Color.Yellow)
-    ) {
-        // اینجا کمپوز های که رویه هم میخوای قرار بگیرن میزاری
-    }
-
-
-}
-
-@Composable
-fun MyColumn() {
-    // میتونیم با این کالم کمپوز هارو عمودی کنار هم چید
-    // اینجا گفتیم هوریزنتالت وسط باشه
-    // این یه کونتینرز هست
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        MyBox()
-        MyBox()
-        MyBox()
-    }
-}
-
-@Composable
-fun MyRow() {
-    //  بصورت افقی کمپوز هارو کنار هم میچینه
-    // این یه کونتینرز هست
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxSize(),
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-        MyBox()
-        MyBox()
-        MyBox()
-    }
-}
-
-@Composable
-fun TextSample() {
-    Column(
+            .fillMaxWidth()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        var input by remember { mutableStateOf("") }
 
-        Text(text = "Hello Android!")
-        Text(
-            text = "Hello Android!",
-            style = TextStyle.Default.copy(color = Color.Black  /*textDirection = TextDirection.Ltr , fontStyle ,fontSize*/  )
-        )
-        BasicText(text = "Hello Android")
+        var saveStatus by remember { mutableStateOf("Hello World") }
 
-        TextField(
-            value = input,
-            onValueChange = { text -> input = text },
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
-                .border(2.dp, Color.Black),
-            label = { Text(text = "name",style = TextStyle.Default.copy(color = Color.Black)) }
-        )
+                .height(150.dp)
+                .background(Color.LightGray)
+                .padding(16.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                text = saveStatus,
+                fontSize = 30.sp,
+                modifier = Modifier.clickable { saveStatus = "Hello World" }
+            )
+        }
 
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Button(
+            onClick = { saveStatus = "Clicked Button 1" },
+            modifier = Modifier.padding(16.dp),
+            border =  BorderStroke(2.dp, Color.White)
+        ) {
+            Text(text = stringResource(id = R.string.Example_Button_1))
+        }
+
+        Button(
+            onClick = { saveStatus = "Clicked Button 2" },
+            modifier = Modifier.padding(16.dp),
+            border =  BorderStroke(2.dp, Color.Black)
+        ) {
+            Text(text = stringResource(id = R.string.Example_Button_2))
+        }
+
+        Button(
+            onClick = { saveStatus = "Clicked Button 3" },
+            modifier = Modifier.padding(16.dp),
+            border =  BorderStroke(2.dp, Color.Yellow),
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Unspecified)
+        ) {
+            Text(text = stringResource(id = R.string.Example_Button_3))
+        }
     }
 }

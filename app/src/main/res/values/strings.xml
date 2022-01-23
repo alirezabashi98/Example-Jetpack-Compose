@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Learn Jetpack Compose</string>
+    <string name="Example_Default">Hello World</string>
+    <string name="Example_Button_1">Clicked Button 1</string>
+    <string name="Example_Button_2">Clicked Button 2</string>
+    <string name="Example_Button_3">Clicked Button 3</string>
 </resources>
