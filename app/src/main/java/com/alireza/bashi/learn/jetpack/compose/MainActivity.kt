@@ -4,27 +4,19 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.alireza.bashi.learn.jetpack.compose.ui.theme.LearnJetpackComposeTheme
-import com.google.accompanist.coil.rememberCoilPainter
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,85 +44,107 @@ fun DefaultPreview() {
     LearnJetpackComposeTheme {
         // تنظیم تم شب و روز نیاز به زمین داریم که کمپوز ها روش بچینیم مثل سارفیس
         Surface(color = MaterialTheme.colors.background) {
-            ImageExample()
+            CustomGraphic()
         }
     }
 }
 
 @Composable
-fun ImageExample() {
+fun CustomGraphic() {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
-            .shadow(4.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // image bitmap
-        Text(
-            text = "Bitmap",
-            modifier = Modifier.padding(top = 16.dp),
-            fontSize = 15.sp
-        )
-        Image(
-            painter = painterResource(id = R.drawable.compose),
-            contentDescription = "Android",
+        Canvas(
             modifier = Modifier
-                .width(300.dp)
-                .height(160.dp)
-                .padding(16.dp)
-                .clip(RoundedCornerShape(10))
-        )
-
-        //image vector
-//        Text(
-//            text = "Vector",
-//            modifier = Modifier.padding(top = 16.dp),
-//            fontSize = 15.sp
-//        )
-//        Image(
-//            painter = painterResource(id = R.drawable.vector),
-//            contentDescription = "Game",
-//            modifier = Modifier
-//                .width(300.dp)
-//                .height(200.dp)
-//                .padding(16.dp)
-//        )
-
-        //image Icon
-//        Text(
-//            text = "Icon",
-//            modifier = Modifier.padding(top = 16.dp),
-//            fontSize = 15.sp
-//        )
-//        Icon(
-//            imageVector = Icons.Outlined.Person,
-//            contentDescription = "User"
-//        )
-
-        //image accompanist-coil
-        Text(
-            text = "accompanist coil",
-            modifier = Modifier.padding(top = 16.dp),
-            fontSize = 15.sp
-        )
-
-        var linkImage by remember { mutableStateOf("") }
-        val painter = rememberCoilPainter(request = linkImage)
-        Image(
-            painter = painter,
-            contentDescription = "Link",
-            modifier = Modifier
-                .width(300.dp)
+                .fillMaxWidth()
+                .padding(8.dp)
                 .height(200.dp)
-                .padding(16.dp)
-                .background(Color.Black)
-                .clip(RoundedCornerShape(10))
-        )
-        Button(onClick = {
-            linkImage = "https://static.cdn.asset.aparat.com/profile-photo/6378539-m.jpg"
-        }) {
-            Text(text = "Load Image")
+                .background(Color.LightGray)
+        ) {
+            drawLine(
+                color = Color.Yellow,
+                start = Offset(0f, size.height),
+                end = Offset(size.width, 0f),
+                strokeWidth = 3f
+            )
+        }
+
+        Canvas(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+                .height(200.dp)
+                .background(Color.LightGray)
+        ) {
+            drawCircle(
+                color = Color.Blue,
+                radius = 80f
+            )
+        }
+//
+//        Canvas(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(8.dp)
+//                .height(200.dp)
+//                .background(Color.LightGray)
+//        ) {
+//            drawRect(
+//                color = Color.Red,
+//                topLeft = Offset(15f,15f),
+//                size = Size(400f,100f)
+//            )
+//        }
+//
+//        Canvas(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .padding(8.dp)
+//                .background(Color.LightGray)
+//        ) {
+//            rotate(
+//                45f
+//            ) {
+//                drawLine(
+//                    color = Color.Yellow,
+//                    start = Offset(0f, size.height),
+//                    end = Offset(size.width, 0f),
+//                    strokeWidth = 3f
+//                )
+//            }
+//        }
+//
+//        Canvas(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .padding(8.dp)
+//                .background(Color.LightGray)
+//        ) {
+//            translate(
+//                left = 100f,
+//                top = 100f
+//            ) {
+//                drawCircle(
+//                    color = Color.Blue,
+//                    radius = 80f
+//                )
+//            }
+//        }
+
+        Canvas(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp)
+                .background(Color.LightGray)
+        ) {
+            scale(0.5f) {
+                drawCircle(
+                    color = Color.Blue,
+                    radius = 80f
+                )
+            }
         }
 
     }
