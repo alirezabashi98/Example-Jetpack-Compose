@@ -4,19 +4,28 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.scale
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.alireza.bashi.learn.jetpack.compose.ui.theme.LearnJetpackComposeTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,108 +53,111 @@ fun DefaultPreview() {
     LearnJetpackComposeTheme {
         // تنظیم تم شب و روز نیاز به زمین داریم که کمپوز ها روش بچینیم مثل سارفیس
         Surface(color = MaterialTheme.colors.background) {
-            CustomGraphic()
+            ExampleDrawerMenu()
         }
     }
 }
 
 @Composable
-fun CustomGraphic() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp)
-    ) {
-        Canvas(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-                .height(200.dp)
-                .background(Color.LightGray)
-        ) {
-            drawLine(
-                color = Color.Yellow,
-                start = Offset(0f, size.height),
-                end = Offset(size.width, 0f),
-                strokeWidth = 3f
-            )
-        }
+fun ExampleDrawerMenu() {
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
 
-        Canvas(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-                .height(200.dp)
-                .background(Color.LightGray)
-        ) {
-            drawCircle(
-                color = Color.Blue,
-                radius = 80f
-            )
-        }
-//
-//        Canvas(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(8.dp)
-//                .height(200.dp)
-//                .background(Color.LightGray)
-//        ) {
-//            drawRect(
-//                color = Color.Red,
-//                topLeft = Offset(15f,15f),
-//                size = Size(400f,100f)
-//            )
-//        }
-//
-//        Canvas(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(8.dp)
-//                .background(Color.LightGray)
-//        ) {
-//            rotate(
-//                45f
-//            ) {
-//                drawLine(
-//                    color = Color.Yellow,
-//                    start = Offset(0f, size.height),
-//                    end = Offset(size.width, 0f),
-//                    strokeWidth = 3f
-//                )
-//            }
-//        }
-//
-//        Canvas(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(8.dp)
-//                .background(Color.LightGray)
-//        ) {
-//            translate(
-//                left = 100f,
-//                top = 100f
-//            ) {
-//                drawCircle(
-//                    color = Color.Blue,
-//                    radius = 80f
-//                )
-//            }
-//        }
-
-        Canvas(
+    ModalDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp)
-                .background(Color.LightGray)
+                .padding(top = 16.dp, start = 16.dp)
         ) {
-            scale(0.5f) {
-                drawCircle(
-                    color = Color.Blue,
-                    radius = 80f
+            Image(
+                painter = painterResource(id = R.drawable.alireza),
+                contentDescription = "Alireza Bashi",
+                modifier = Modifier
+                    .size(130.dp)
+                    .clip(RoundedCornerShape(100.dp))
+                    .border(2.dp, Color.Black),
+                contentScale = ContentScale.Crop
+            )
+            Text(
+                text = "AlirezaBashi98",
+                fontSize = 20.sp
+            )
+            Text(
+                text = "AlirezaBashi98@gmail.com",
+                fontSize = 15.sp,
+            )
+
+            Divider(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                color = Color.Black
+            )
+
+            val menu = mapOf(
+                "Home" to Icons.Default.Home,
+                "Settings" to Icons.Default.Settings,
+                "About" to Icons.Default.Info,
+            )
+            for ((name, icon) in menu)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                ) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = name,
+                    )
+                    Text(
+                        text = name,
+                        modifier = Modifier.padding(start = 8.dp, top = 3.dp)
+                    )
+                }
+
+            Divider(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                color = Color.Black
+            )
+
+            Row(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth()
+                    .clickable {
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Close Menu"
+                )
+                Text(
+                    text = "Close Menu",
+                    modifier = Modifier
+                        .padding(start = 8.dp, top = 3.dp)
+                        .align(alignment = Alignment.CenterVertically)
                 )
             }
-        }
 
+        }
+    },
+    drawerBackgroundColor = Color.White,
+    drawerContentColor = Color.Black,
+    gesturesEnabled = true) {
+        Column {
+            Icon(
+                imageVector = Icons.Default.Home,
+                contentDescription = "Home",
+                modifier = Modifier.fillMaxSize()
+            )
+        }
     }
 }
