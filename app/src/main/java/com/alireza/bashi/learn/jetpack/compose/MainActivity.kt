@@ -25,9 +25,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            LearnJetpackComposeTheme {
-                DefaultPreview()
-            }
+            DefaultPreview()
         }
     }
 }
@@ -72,7 +70,8 @@ fun ScaffoldDemo() {
                     }) {
                         Icon(
                             imageVector = Icons.Default.Menu,
-                            contentDescription = "Menu")
+                            contentDescription = "Menu"
+                        )
                     }
                 }
             )
@@ -84,17 +83,18 @@ fun ScaffoldDemo() {
         drawerContent = {
             Icon(
                 imageVector = Icons.Default.Favorite,
-                contentDescription = "Favorite")
+                contentDescription = "Favorite"
+            )
             Text(text = "ok")
         }
-    ) {padding ->
+    ) { padding ->
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
             Text(
                 text = "Count : $count",
                 modifier = Modifier.align(Alignment.Center)
-                )
+            )
         }
     }
 }

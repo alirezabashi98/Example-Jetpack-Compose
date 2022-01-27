@@ -42,7 +42,7 @@ fun LearnJetpackComposeTheme(
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
+        typography = MyCustomTypography,
         shapes = Shapes,
         content = content
     )
