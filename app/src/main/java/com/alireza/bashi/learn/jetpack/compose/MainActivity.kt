@@ -4,28 +4,15 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Switch
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import com.alireza.bashi.learn.jetpack.compose.ui.theme.LearnJetpackComposeTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,42 +38,58 @@ fun DefaultPreview() {
     LearnJetpackComposeTheme {
         // تنظیم تم شب و روز نیاز به زمین داریم که کمپوز ها روش بچینیم مثل سارفیس
         Surface(color = MaterialTheme.colors.background) {
-            AnimationExample()
+            SnackBarExample()
         }
     }
 }
 
 @Composable
-fun AnimationExample() {
-    val (animate, onAnimateChange) = remember { mutableStateOf(false) }
-    val cornerSize by animateFloatAsState(targetValue = if (animate) 500f else 10f)
-    val imageHeight by animateDpAsState(
-        targetValue = if (animate) 300.dp else 200.dp,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioHighBouncy,
-            stiffness = Spring.StiffnessHigh
-        )
-    )
+fun SnackBarExample() {
+    val snackBarState = SnackbarHostState()
+    val scaffoldState = rememberScaffoldState(snackbarHostState = snackBarState)
+    val scope = rememberCoroutineScope()
+    var showDialog by remember { mutableStateOf(false) }
+    var bgColor by remember { mutableStateOf(Color.Blue) }
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Scaffold(
+        scaffoldState = scaffoldState,
+        backgroundColor = bgColor,
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                text = { Text(text = "Show SnackBar") },
+                onClick = {
+                    scope.launch {
+                        val result = scaffoldState.snackbarHostState.showSnackbar("Hello Jetpack Compose", actionLabel = "ok")
+                        if (result == SnackbarResult.ActionPerformed) showDialog = true
+                    }
+                },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Notifications,
+                        contentDescription = "Notifications"
+                    )
+                }
+            )
+        }
     ) {
-        Switch(
-            checked = animate,
-            onCheckedChange = onAnimateChange,
-            modifier = Modifier.padding(16.dp)
-        )
 
-        Image(
-            painter = painterResource(id = R.drawable.alireza),
-            contentDescription = "may Image",
-            modifier = Modifier
-                .clip(RoundedCornerShape(cornerSize))
-                .fillMaxWidth()
-                .height(imageHeight)
-                .padding(8.dp),
-            contentScale = ContentScale.Crop
-        )
+        if (showDialog){
+            AlertDialog(
+                onDismissRequest = { /*TODO*/ },
+                confirmButton = { Button(onClick = {
+                    bgColor = Color.Yellow
+                    showDialog = false
+                }) {
+                    Text(text = "ok")
+                }},
+                dismissButton = { Button(onClick = { showDialog = false }) {
+                    Text(text = "cancel")
+                }},
+                title = {Text(text = "AlertDialog Example") },
+                text = { Text(text = "AlertDialog text") },
+                properties = DialogProperties(dismissOnBackPress = false,dismissOnClickOutside = false)
+            )
+        }
+
     }
 }
