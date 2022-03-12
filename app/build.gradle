@@ -67,4 +67,8 @@ dependencies {
 
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
     implementation "com.google.accompanist:accompanist-coil:0.12.0"
+
+    // constraint layout
+    // https://developer.android.com/jetpack/compose/layouts/constraintlayout
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02"
 }
