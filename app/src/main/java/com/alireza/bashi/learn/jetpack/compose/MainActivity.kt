@@ -4,25 +4,19 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.alireza.bashi.learn.jetpack.compose.ui.theme.LearnJetpackComposeTheme
+import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,49 +42,51 @@ fun DefaultPreview() {
     LearnJetpackComposeTheme {
         // تنظیم تم شب و روز نیاز به زمین داریم که کمپوز ها روش بچینیم مثل سارفیس
         Surface(color = MaterialTheme.colors.background) {
-            ExampleCardImage()
+
+            var color by remember { mutableStateOf(Color.Yellow) }
+
+            Column {
+                ExampleColorBox(
+                    Modifier
+                        .weight(1f)
+                        .fillMaxSize(),
+                    color = color
+                ) {
+                    color = it
+                }
+
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxSize()
+                        .background(color)
+                )
+            }
         }
     }
 }
 
 @Composable
-fun ExampleCardImage() {
-    Card(
-        modifier = Modifier
-            .padding(16.dp)
-            .width(150.dp)
-            .height(200.dp)
-            .clip(RoundedCornerShape(16.dp))
-    ) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.alireza),
-                contentDescription = "alirezabashi98",
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.BottomCenter)
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                Color.Black
-                            ),
-                            startY = 180f
-                        )
+fun ExampleColorBox(
+    modifier: Modifier = Modifier,
+    color : Color,
+    updateColor: (Color) -> Unit
+) {
+
+    Box(
+        modifier = modifier
+            .background(color)
+            .clickable {
+                updateColor(
+                    Color(
+                        Random.nextFloat(),
+                        Random.nextFloat(),
+                        Random.nextFloat(),
+                        1f
                     )
-            )
-            Text(
-                text = "AlirezaBashi98",
-                modifier = Modifier
-                    .padding(10.dp)
-                    .align(Alignment.BottomCenter)
-            )
-        }
+                )
+            }
+    ) {
+
     }
 }
