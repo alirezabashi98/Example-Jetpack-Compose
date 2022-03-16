@@ -4,18 +4,23 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.ConstraintSet
 import com.alireza.bashi.learn.jetpack.compose.ui.theme.LearnJetpackComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -42,55 +47,40 @@ fun DefaultPreview() {
     LearnJetpackComposeTheme {
         // تنظیم تم شب و روز نیاز به زمین داریم که کمپوز ها روش بچینیم مثل سارفیس
         Surface(color = MaterialTheme.colors.background) {
-            ExampleConstraintLayout2()
+            ExampleAnimations()
         }
     }
 }
 
 @Composable
-fun ExampleConstraintLayout() {
-    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val (button, text) = createRefs()
+fun ExampleAnimations() {
+    var sizeState by remember { mutableStateOf(200.dp) }
+    val sizeAnim by animateDpAsState(
+        targetValue = sizeState,
+        spring(
+            Spring.DampingRatioHighBouncy
+        )
+    )
 
-        val guideLineStart = createGuidelineFromStart(0.5f)
+    val infiniteTransition = rememberInfiniteTransition()
+    val color by infiniteTransition.animateColor(
+        initialValue = Color.Blue,
+        targetValue = Color.Red,
+        animationSpec = infiniteRepeatable(
+            tween(durationMillis = 2000),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
 
-        Button(onClick = { /*TODO*/ }, Modifier.constrainAs(button) {
-            top.linkTo(parent.top, margin = 16.dp)
-            start.linkTo(parent.start, margin = 16.dp)
-        }) {
-            Text(text = "Button")
+    Box(
+        modifier = Modifier
+            .background(color)
+            .size(sizeAnim),
+        contentAlignment = Alignment.Center
+    ) {
+        Button(onClick = { sizeState += 50.dp }) {
+            Text(text = "Example")
         }
-        Text(text = "text", Modifier.constrainAs(text) {
-            top.linkTo(button.bottom)
-            start.linkTo(guideLineStart)
-        })
     }
 }
 
-@Composable
-fun ExampleConstraintLayout2() {
-    val constrains = ConstraintSet {
-        val button = createRefFor("button")
-        val text = createRefFor("text")
-
-        val guidLineStart = createGuidelineFromStart(0.5f)
-
-        constrain(button) {
-            top.linkTo(parent.top, margin = 16.dp)
-            start.linkTo(parent.start, margin = 16.dp)
-        }
-
-        constrain(text) {
-            top.linkTo(button.bottom)
-            start.linkTo(guidLineStart)
-        }
-
-    }
-
-    ConstraintLayout(constrains, Modifier.fillMaxSize()) {
-        Button(onClick = { /*TODO*/ }, Modifier.layoutId("button")) {
-            Text(text = "button 2")
-        }
-        Text(text = "text 2", Modifier.layoutId("text"))
-    }
-}
