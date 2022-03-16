@@ -87,7 +87,7 @@ fun ExampleConstraintLayout2() {
 
     }
 
-    ConstraintLayout(constrains,Modifier.fillMaxSize()) {
+    ConstraintLayout(constrains, Modifier.fillMaxSize()) {
         Button(onClick = { /*TODO*/ }, Modifier.layoutId("button")) {
             Text(text = "button 2")
         }
