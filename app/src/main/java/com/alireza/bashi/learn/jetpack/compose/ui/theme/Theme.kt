@@ -7,17 +7,17 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
 private val DarkColorPalette = darkColors(
-    surface = Blue,
-    onSurface = Navy,
-    primary = Navy,
-    onPrimary = Chartreuse
+    surface = Purple500,
+    onSurface = Purple200,
+    primary = Purple200,
+    onPrimary = Purple700
 )
 
 private val LightColorPalette = lightColors(
-    surface = Blue,
-    onSurface = White,
-    primary = LightBlue,
-    onPrimary = Navy
+    surface = Purple500,
+    onSurface = Purple200,
+    primary = Purple200,
+    onPrimary = Purple700
 
     /* Other default colors to override
     background = Color.White,
@@ -42,7 +42,7 @@ fun LearnJetpackComposeTheme(
 
     MaterialTheme(
         colors = colors,
-        typography = MyCustomTypography,
+        typography = Typography,
         shapes = Shapes,
         content = content
     )

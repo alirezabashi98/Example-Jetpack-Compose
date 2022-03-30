@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -18,8 +19,10 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.alireza.bashi.learn.jetpack.compose.ui.HomeScreen
 import com.alireza.bashi.learn.jetpack.compose.ui.theme.LearnJetpackComposeTheme
 
+@ExperimentalFoundationApi
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +36,7 @@ class MainActivity : ComponentActivity() {
 //    showSystemUi = true
 //    uiMode = UI_MODE_NIGHT_YES
 //    name = "DefaultPreviewDark"
+@ExperimentalFoundationApi
 @Preview(showBackground = true)
 @Preview(
     showBackground = true,
@@ -44,7 +48,7 @@ fun DefaultPreview() {
     LearnJetpackComposeTheme {
         // تنظیم تم شب و روز نیاز به زمین داریم که کمپوز ها روش بچینیم مثل سارفیس
         Surface(color = MaterialTheme.colors.background) {
-
+            HomeScreen()
         }
     }
 }
