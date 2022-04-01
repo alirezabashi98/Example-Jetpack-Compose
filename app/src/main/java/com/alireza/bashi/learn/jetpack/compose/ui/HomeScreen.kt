@@ -31,7 +31,7 @@ fun HomeScreen(
                 navController.navigate(route = Screen.Detail.route){
                     // اگر بخوایم این صفحه پاک بشه مثلا برای اسپلش اسکرین بعد رفتن به صفحه بعدی بر نگرده
                     popUpTo(Screen.Home.route){
-                        inclusive = true
+//                        inclusive = true
                     }
                 }
             },

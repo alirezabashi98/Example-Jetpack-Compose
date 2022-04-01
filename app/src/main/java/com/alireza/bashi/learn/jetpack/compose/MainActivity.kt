@@ -9,7 +9,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.alireza.bashi.learn.jetpack.compose.navigation.SetupNavGraph
 import com.alireza.bashi.learn.jetpack.compose.ui.theme.LearnJetpackComposeTheme
@@ -19,9 +18,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            DefaultPreview()
-        }
+        setContent { DefaultPreview() }
     }
 }
 
@@ -37,15 +34,14 @@ class MainActivity : ComponentActivity() {
     name = "DefaultPreviewDark"
 )
 @Composable
-fun DefaultPreview() {
+private fun DefaultPreview() {
 
-    lateinit var navController: NavHostController
+    val navController = rememberNavController()
 
     LearnJetpackComposeTheme {
         // تنظیم تم شب و روز نیاز به زمین داریم که کمپوز ها روش بچینیم مثل سارفیس
         Surface(color = MaterialTheme.colors.background) {
 
-            navController = rememberNavController()
             SetupNavGraph(navController = navController)
 
         }
